@@ -26,7 +26,7 @@ def main():
     
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     AsteroidField()
     
     while True:
@@ -34,10 +34,19 @@ def main():
             if event.type == pygame.QUIT:
                 return
         screen.fill("black")
+        
         for obj in updatable:
             obj.update(dt)
+        
+        for asteroid in asteroids:
+            if asteroid.collision_check(player):
+                print("Game over!")
+                pygame.quit()
+                return
+
         for obj in drawable:
             obj.draw(screen)
+        
         pygame.display.flip()
         dt = (game_clock.tick(60))/1000
 
